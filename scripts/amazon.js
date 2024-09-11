@@ -1,4 +1,4 @@
-import { cart } from "../data/cart.js"
+import { cart, addToCart } from "../data/cart.js"
 import { products } from "../data/products.js"
 
 
@@ -67,36 +67,32 @@ document.querySelectorAll('.js-add-to-cart')
       const productId = button.dataset.productId
       const quantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
       const addedMessageElement = document.querySelector(`.js-added-message-${productId}`)
+      addToCart(productId, quantityValue)
+      displayTotalQuantity()
+      displayAddedMessage(productId,addedMessageElement)
+    })
+  })
 
-      if(cart.some(obj => obj.productId === productId)) {
-        const product = cart.find((obj) => obj.productId === productId)
-        product['quantity'] += Number(quantityValue.value)
-      } else {
-        cart.push({
-          productId :productId,
-          quantity: Number(quantityValue.value)
-        })
-      }
+  function displayAddedMessage (productId, addedMessageElement) {
+    addedMessageElement.classList.add('added-to-cart-visible')
 
-      addedMessageElement.classList.add('added-to-cart-visible')
+    if (addedMessagetimout[productId]) {
+      clearTimeout(addedMessagetimout[productId])
+    }
 
-      if (addedMessagetimout[productId]) {
-        clearTimeout(addedMessagetimout[productId])
-      }
+    const timeOutId = setTimeout(() => {
+      addedMessageElement.classList.remove('added-to-cart-visible')
+    },2000)
 
-      const timeOutId = setTimeout(() => {
-        addedMessageElement.classList.remove('added-to-cart-visible')
-      },2000)
+    addedMessagetimout[productId] = timeOutId
+  }
 
-      addedMessagetimout[productId] = timeOutId
-
-      let totalQuantity = 0
+  function displayTotalQuantity () {
+    let totalQuantity = 0
 
       cart.forEach( (product) => {
         totalQuantity += product.quantity
       })
 
       document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
-   
-    })
-  })
+  }
