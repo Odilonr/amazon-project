@@ -1,3 +1,5 @@
+import { cart } from "../data/cart.js"
+
 let productsHTML = ''
 
 products.forEach((products) => {
@@ -25,7 +27,7 @@ products.forEach((products) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${products.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -41,7 +43,7 @@ products.forEach((products) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-message-${products.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -53,23 +55,39 @@ products.forEach((products) => {
         </div>`
 })
 
+const addedMessagetimout = {}
+
 document.querySelector(' .js-products-grid').innerHTML = productsHTML
 
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId
+      const quantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
+      const addedMessageElement = document.querySelector(`.js-added-message-${productId}`)
 
       if(cart.some(obj => obj.productId === productId)) {
         const product = cart.find((obj) => obj.productId === productId)
-        product['quantity']++
+        product['quantity'] += Number(quantityValue.value)
       } else {
         cart.push({
           productId :productId,
-          quantity: 1
+          quantity: Number(quantityValue.value)
         })
       }
-      
+
+      addedMessageElement.classList.add('added-to-cart-visible')
+
+      if (addedMessagetimout[productId]) {
+        clearTimeout(addedMessagetimout[productId])
+      }
+
+      const timeOutId = setTimeout(() => {
+        addedMessageElement.classList.remove('added-to-cart-visible')
+      },2000)
+
+      addedMessagetimout[productId] = timeOutId
+
       let totalQuantity = 0
 
       cart.forEach( (product) => {
@@ -77,6 +95,6 @@ document.querySelectorAll('.js-add-to-cart')
       })
 
       document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
-      
+   
     })
   })
