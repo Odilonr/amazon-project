@@ -75,8 +75,8 @@ export function updateDeliveryOptionFromCart (productId, deliveryOptionId) {
 export function updateTotalQuantity () {
   let totalQuantity = 0
 
-  cart.forEach( (product) => {
-    totalQuantity += product.quantity
+  cart.forEach( (cartItem) => {
+    totalQuantity += cartItem.quantity
   })
 
   return totalQuantity

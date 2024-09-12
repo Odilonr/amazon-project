@@ -1,15 +1,14 @@
 import { cart, removeFromCart, updateFromCart, 
   updateDeliveryOptionFromCart, updateTotalQuantity } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js"
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkOutHeader.js";
 
 
 export function renderOrderSummary () {
-
-  document.querySelector('.js-checkout-quantity').innerHTML = `${updateTotalQuantity(cart)} items`
 
   let cartSummaryHTML = ''
 
@@ -127,9 +126,9 @@ export function renderOrderSummary () {
       link.addEventListener('click', () => {
         const productId = link.dataset.productId
         removeFromCart(productId)
+        renderOrderSummary()
         renderPaymentSummary()
-        document.querySelector('.js-checkout-quantity').innerHTML = `${updateTotalQuantity(cart)} items`
-        document.querySelector(`.js-cart-item-container-${productId}`).remove()
+        renderCheckoutHeader()
       })
     })
 
@@ -150,6 +149,7 @@ export function renderOrderSummary () {
         document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-container')
         renderOrderSummary()
         renderPaymentSummary()
+        renderCheckoutHeader()
       })
     })
 
