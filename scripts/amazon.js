@@ -1,6 +1,13 @@
 import { cart, addToCart } from "../data/cart.js"
 import { products } from "../data/products.js"
 import { formatCurrency } from "./utils/money.js"
+import { updateTotalQuantity } from "./utils/updatequantity.js"
+
+const totalQuantity = updateTotalQuantity(cart)
+
+if(totalQuantity >= 1) {
+  document.querySelector('.js-cart-quantity').innerHTML = updateTotalQuantity(cart)
+}
 
 
 let productsHTML = ''
@@ -69,7 +76,7 @@ document.querySelectorAll('.js-add-to-cart')
       const quantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
       const addedMessageElement = document.querySelector(`.js-added-message-${productId}`)
       addToCart(productId, quantityValue)
-      displayTotalQuantity()
+      document.querySelector('.js-cart-quantity').innerHTML = updateTotalQuantity(cart)
       displayAddedMessage(productId,addedMessageElement)
     })
   })
@@ -88,12 +95,3 @@ document.querySelectorAll('.js-add-to-cart')
     addedMessagetimout[productId] = timeOutId
   }
 
-  function displayTotalQuantity () {
-    let totalQuantity = 0
-
-      cart.forEach( (product) => {
-        totalQuantity += product.quantity
-      })
-
-      document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
-  }
