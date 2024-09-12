@@ -63,3 +63,16 @@ export function updateFromCart (productId, newQuantity) {
 
   saveToStorage()
 }
+
+
+export function updateDeliveryOptionFromCart (productId, deliveryOptionId) {
+  cart.forEach((cartItem) => {
+    if (cartItem.productId == productId && deliveryOptionId == cartItem.deliveryOptionId) {
+      cartItem.deliveryOptionId = deliveryOptionId
+      return
+    }
+  })
+
+  console.log(cart)
+  saveToStorage()
+}
