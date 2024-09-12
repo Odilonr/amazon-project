@@ -52,7 +52,7 @@ export function removeFromCart (productId) {
 
 export function updateFromCart (productId, newQuantity) {
   
-  //const product = cart.find((obj) => obj.productId === productId)
+  const product = cart.find((obj) => obj.productId === productId)
   //product['quantity'] = Number(newQuantity.value)
 
   for (let item of cart) {
@@ -66,13 +66,13 @@ export function updateFromCart (productId, newQuantity) {
 
 
 export function updateDeliveryOptionFromCart (productId, deliveryOptionId) {
-  cart.forEach((cartItem) => {
-    if (cartItem.productId == productId && deliveryOptionId == cartItem.deliveryOptionId) {
+  const item = cart.find(obj => obj.productId === productId)
+  item['deliveryOptionId'] = deliveryOptionId
+  /*cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
       cartItem.deliveryOptionId = deliveryOptionId
-      return
     }
-  })
+  })*/
 
-  console.log(cart)
   saveToStorage()
 }
