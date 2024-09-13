@@ -72,7 +72,7 @@ document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId
-      const quantityValue = document.querySelector(`.js-quantity-selector-${productId}`)
+      const quantityValue = document.querySelector(`.js-quantity-selector-${productId}`).value
       const addedMessageElement = document.querySelector(`.js-added-message-${productId}`)
       addToCart(productId, quantityValue)
       document.querySelector('.js-cart-quantity').innerHTML = updateTotalQuantity(cart)
